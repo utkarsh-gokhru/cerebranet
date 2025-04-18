@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 
 # Path to your downloaded Firebase service account key
-cred_path = os.path.join(settings.BASE_DIR, 'etc/secrets/naac-fd101-firebase-adminsdk-szkmf-c408050452.json')
+cred_path = os.path.join(settings.BASE_DIR, './naac-fd101-firebase-adminsdk-szkmf-c408050452.json')
 
 # Initialize Firebase app only once
 if not firebase_admin._apps:
