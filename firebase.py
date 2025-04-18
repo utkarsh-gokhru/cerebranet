@@ -1,15 +1,18 @@
-# firebase_init.py
+import json
 import firebase_admin
 from firebase_admin import credentials, storage
 import os
 from django.conf import settings
 
-# Path to your downloaded Firebase service account key
-cred_path = os.path.join(settings.BASE_DIR, './naac-fd101-firebase-adminsdk-szkmf-c408050452.json')
+# Fetch Firebase credentials from environment variable
+firebase_service_account = os.getenv('FIREBASE_SERVICE_ACCOUNT')
+
+# Parse the JSON string into a dictionary
+cred_dict = json.loads(firebase_service_account)
 
 # Initialize Firebase app only once
 if not firebase_admin._apps:
-    cred = credentials.Certificate(cred_path)
+    cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred, {
         'storageBucket': 'naac-fd101.appspot.com'
     })
