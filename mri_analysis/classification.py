@@ -1,17 +1,10 @@
 import cv2
 import numpy as np
-import tensorflow as tf
 import os
 from django.conf import settings
 
 # Define your categories
 categories = ['glioma', 'meningioma', 'notumor', 'pituitary']
-
-# Load the classification model
-model_path = os.path.join(settings.BASE_DIR, 'ml_models', 'btc.keras')
-
-# Load the model
-model = tf.keras.models.load_model(model_path)  
 
 image_size = (256, 256)  # Image size used during training
 
@@ -27,8 +20,12 @@ def preprocess_image(img_path):
         raise ValueError("Error loading image. Please check the file path and format.")
 
 def make_prediction(img_path):
+    import tensorflow as tf  # <- Lazy load TensorFlow here
+    model_path = os.path.join(settings.BASE_DIR, 'ml_models', 'btc.keras')
+    model = tf.keras.models.load_model(model_path)  # Load the model only when needed
+
     img_array = preprocess_image(img_path)
-    prediction_probs = model.predict(img_array)  # Use 'model' here
+    prediction_probs = model.predict(img_array)
     prediction_index = np.argmax(prediction_probs, axis=1)[0]
     prediction_label = categories[prediction_index]
     return prediction_label, prediction_probs[0]
