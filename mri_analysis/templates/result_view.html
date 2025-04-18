@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MRI Analysis Result</title>
+  <style>
+    :root {
+      --primary: #5a67d8;
+      /* Indigo-600 */
+      --primary-hover: #4c51bf;
+      /* Indigo-700 */
+      --bg-light: #f3f4ff;
+      --text-dark: #1e293b;
+      --text-gray: #64748b;
+      --accent: #e0e7ff;
+      /* Light indigo background */
+      --success: #bbf7d0;
+      --warning: #fef3c7;
+      --error: #fee2e2;
+      --card-shadow: 0 10px 25px -5px rgba(90, 103, 216, 0.1), 0 8px 10px -6px rgba(90, 103, 216, 0.05);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: var(--text-dark);
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: var(--card-shadow);
+      width: 100%;
+      max-width: 1100px;
+      transition: var(--transition);
+      animation: fadeIn 0.8s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary) 0%, #7f9cf5 100%);
+    }
+
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+      }
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.2);
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .header-icon {
+      font-size: 32px;
+      margin-right: 15px;
+      animation: pulseGlow 2s infinite;
+      padding: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      color: var(--primary);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-gray);
+      margin-bottom: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-label::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background: #e2e8f0;
+      margin-left: 15px;
+    }
+
+    .original-img {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .original-img img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 3px solid #e2e8f0;
+      transition: var(--transition);
+      object-fit: cover;
+    }
+
+    .original-img img:hover {
+      transform: scale(1.03);
+      border-color: var(--primary);
+    }
+
+    .key-findings {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .result-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      border-left: 4px solid var(--primary);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: var(--text-gray);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .tumor-detected {
+      background-color: var(--warning);
+      border-left-color: #f59e0b;
+    }
+
+    .tumor-type {
+      background-color: #e0f2fe;
+      border-left-color: #0ea5e9;
+    }
+
+    .tumor-size {
+      background-color: #f3e8ff;
+      border-left-color: #a855f7;
+    }
+
+    .visualization-section {
+      margin-top: 40px;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .analysis-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+    }
+
+    .analysis-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
+    }
+
+    .analysis-img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-bottom: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+      padding: 10px;
+    }
+
+    .analysis-label {
+      padding: 15px;
+      text-align: center;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: linear-gradient(90deg, var(--primary) 0%, #7f9cf5 100%);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 768px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 30px 20px;
+      }
+
+      h2 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="page-header">
+      <div class="header-icon">🧠</div>
+      <h2>MRI Tumor Analysis Result</h2>
+    </div>
+
+    <div class="results-grid">
+      <div class="original-img">
+        <div class="section-label">📥 Original MRI Image</div>
+        <img src="{{ analysis_result.mri_image.image.url }}" alt="Original MRI Image">
+      </div>
+
+      <div class="key-findings">
+        <div class="section-label">🔍 Key Findings</div>
+        <div class="result-metrics">
+          <div class="metric-card tumor-detected">
+            <div class="metric-label">Tumor Detected</div>
+            <div class="metric-value">{{ analysis_result.tumor_detected|yesno:"Yes,No" }}</div>
+          </div>
+
+          <div class="metric-card tumor-type">
+            <div class="metric-label">Predicted Type</div>
+            <div class="metric-value">{{ analysis_result.detailed_analysis }}</div>
+          </div>
+
+          {% if analysis_result.tumor_detected %}
+          <div class="metric-card tumor-size">
+            <div class="metric-label">Size (pixels)</div>
+            <div class="metric-value">{{ analysis_result.tumor_size_px }}</div>
+          </div>
+
+          <div class="metric-card tumor-size">
+            <div class="metric-label">Size (mm²)</div>
+            <div class="metric-value">{{ analysis_result.tumor_size_mm2 }} mm²</div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if analysis_result.segmented_result_url or analysis_result.bounded_box_image_url %}
+    <div class="visualization-section">
+      <div class="section-label">🔬 Analysis Visualizations</div>
+      <div class="analysis-grid">
+        {% if analysis_result.segmented_result_url %}
+        <div class="analysis-card">
+          <img class="analysis-img" src="{{ analysis_result.segmented_result_url }}" alt="Segmentation Result">
+          <div class="analysis-label">
+            <span>🧪</span> Segmented Mask
+          </div>
+        </div>
+        {% endif %}
+
+        {% if analysis_result.bounded_box_image_url %}
+        <div class="analysis-card">
+          <img class="analysis-img" src="{{ analysis_result.bounded_box_image_url }}" alt="Bounded Box Image">
+          <div class="analysis-label">
+            <span>🔲</span> Bounding Box
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <p class="section-label">No segmentation performed</p>
+    {% endif %}
+
+    {% if analysis_result.tumor_detected %}
+    <div class="btn-container">
+      <a href="{% url 'predict_tumor_stage' %}?result_id={{ analysis_result.id }}" class="btn-primary">
+        🧬 Predict Tumor Stage
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</body>
+
+</html>

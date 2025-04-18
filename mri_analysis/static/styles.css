@@ -1,0 +1,62 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.image-section {
+    margin: 20px 0;
+}
+
+.mri-image, .segmentation-image {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.back-button {
+    margin-top: 20px;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.bg {
+    background-image: url('/static/asserts/bg.jpg');  /* Replace with your background image path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+    margin-top: 20px;
+}
+
+.mri-image, .segmentation-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    border-radius: 8px;
+}

@@ -1,0 +1,14 @@
+numpy
+opencv-python
+tensorflow
+django
+Pillow
+matplotlib
+scikit-fuzzy
+joblib
+xgboost
+scikit-learn
+reportlab
+gunicorn 
+whitenoise 
+psycopg2-binary

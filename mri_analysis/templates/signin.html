@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Portal - Login/Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo svg {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            color: #5a67d8;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .tab:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .tab.active {
+            background-color: #5a67d8;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #5a67d8;
+            outline: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .auth-footer a {
+            color: #5a67d8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .animation-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+        }
+
+        .brain-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-message {
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .success {
+            background-color: rgba(72, 187, 120, 0.2);
+            color: #2f855a;
+        }
+
+        .error {
+            background-color: rgba(245, 101, 101, 0.2);
+            color: #c53030;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 
+                  10-10S17.52 2 12 2zm1 14h-2v-3H8v-2h3V8h2v3h3v2h-3v3z" />
+                </svg>
+                CerbraNet Multi-Model Framework using RL
+            </a>
+            <div class="nav-links">
+
+                <a href="#" class="active">Account</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container" id="auth-container">
+        <div class="auth-box" id="login-box">
+            <div class="animation-container">
+                <svg class="brain-animation" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#5a67d8"
+                        d="M208 368v-64h-64c-35.3 0-64-28.7-64-64c0-23.4 12.8-44.8 32.1-55.8c9.8-5.6 16.1-16.5 15.9-28.4c-.2-11.6-6.2-21.8-15.9-27.5C77.8 108.3 48 77.6 48 39.9C48 17.9 65.9 0 87.9 0H424.1C446.1 0 464 17.9 464 39.9c0 37.7-29.8 68.4-63.1 88.4c-9.7 5.8-15.7 15.9-15.9 27.5c-.2 11.9 6.1 22.8 15.9 28.4C421.2 195.2 434 216.6 434 240c0 35.3-28.7 64-64 64H304v64h16c22.1 0 40 17.9 40 40c0 22.1-17.9 40-40 40H192c-22.1 0-40-17.9-40-40c0-22.1 17.9-40 40-40h16zm16-64h64V240c0-8.8 7.2-16 16-16s16 7.2 16 16v160h16c4.4 0 8 3.6 8 8c0 4.4-3.6 8-8 8H192c-4.4 0-8-3.6-8-8c0-4.4 3.6-8 8-8h16V240c0-8.8 7.2-16 16-16s16 7.2 16 16v64h-16z" />
+                </svg>
+            </div>
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Access your account and resources</p>
+            </div>
+            <div class="tabs">
+                <div class="tab active" onclick="showLogin()">Login</div>
+                <div class="tab" onclick="showSignup()">Sign Up</div>
+            </div>
+            <div id="login-form">
+                <div id="login-message" class="form-message hidden"></div>
+                <form id="loginForm" action="{% url 'signin' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="unique_id">Login ID</label>
+                        <input type="text" id="unique_id" name="unique_id" placeholder="Enter your Login ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password"
+                            required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+                <div class="auth-footer">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+
+            <div id="signup-form" class="hidden">
+                <div id="signup-message" class="form-message hidden"></div>
+                <form id="signupForm" method="POST" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" id="phone_number" name="phone_number" placeholder="Enter your phone number"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" name="password" placeholder="Create a password"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm_password"
+                            placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor_reg_number">Doctor Registration Number</label>
+                        <input type="text" id="doctor_reg_number" name="doctor_reg_number"
+                            placeholder="Enter your registration number" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the Terms and Privacy Policy</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Brain Tumor Awareness Initiative</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to switch between login and signup forms
+        function showLogin() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('signup-form').classList.add('hidden');
+            document.querySelector('.tab.active').classList.remove('active');
+            document.querySelectorAll('.tab')[0].classList.add('active');
+        }
+
+        function showSignup() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.remove('hidden');
+            document.querySelector('.tab.active').classList.remove('active');
+            document.querySelectorAll('.tab')[1].classList.add('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.getElementById('loginForm');
+            console.log("Form is sending POST request to: " + form.action);
+        });
+    </script>
+
+</body>
+
+</html>
