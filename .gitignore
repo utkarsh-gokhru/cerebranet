@@ -1,5 +1,2 @@
-ml_models/btc.keras
-ml_models/unet_brain_mri_segmentation.keras
-
 __pycache__
 naac-fd101-firebase-adminsdk-szkmf-c408050452.json
