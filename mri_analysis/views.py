@@ -1,7 +1,6 @@
 import os
 import cv2
 import numpy as np
-import tensorflow as tf
 import matplotlib.pyplot as plt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import default_storage
