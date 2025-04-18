@@ -6,6 +6,7 @@ from django.core.files.storage import default_storage
 from PIL import Image
 from django.conf import settings
 from firebase import upload_to_firebase
+import tempfile,requests
 
 # Register Keras custom functions
 @tf.keras.utils.register_keras_serializable()
@@ -20,9 +21,29 @@ def dice_coefficient(y_true, y_pred):
 def dice_loss(y_true, y_pred):
     return 1 - dice_coefficient(y_true, y_pred)
 
-# Load the trained model
-model_path = os.path.join(settings.BASE_DIR, 'ml_models', 'unet_brain_mri_segmentation.keras')
-unet_model = tf.keras.models.load_model(model_path, custom_objects={'dice_loss': dice_loss, 'dice_coefficient': dice_coefficient})
+def load_model_from_firebase():
+    firebase_url = 'https://firebasestorage.googleapis.com/v0/b/naac-fd101.appspot.com/o/models%2Funet_brain_mri_segmentation.keras?alt=media&token=083944c4-a5a4-4ec3-8a22-1da373631617'
+    
+    # Create a temporary file
+    temp_model_file = tempfile.NamedTemporaryFile(delete=False, suffix='.keras')
+
+    # Download the model
+    response = requests.get(firebase_url)
+    if response.status_code == 200:
+        temp_model_file.write(response.content)
+        temp_model_file.flush()
+        temp_model_file.close()
+        
+        # Load the model
+        model = tf.keras.models.load_model(
+            temp_model_file.name,
+            custom_objects={'dice_loss': dice_loss, 'dice_coefficient': dice_coefficient}
+        )
+        return model
+    else:
+        raise Exception(f"Failed to download model from Firebase: {response.status_code}")
+
+unet_model = load_model_from_firebase()
 
 # Define image input size
 image_size = (128, 128)

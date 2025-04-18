@@ -1,0 +1,1 @@
+web: gunicorn tumor_detection_project.wsgi
